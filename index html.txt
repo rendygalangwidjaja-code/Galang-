@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Pengiriman & Gaji Courier</title>
+    <style>
+        :root {
+            --primary: #d90429;
+            --primary-dark: #ef233c;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #2b2d42;
+            --text-muted: #8d99ae;
+            --border: #edf2f4;
+            --success: #2a9d8f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .app-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 420px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #d90429, #ef233c);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s;
+            background: #fafafa;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(217, 4, 41, 0.1);
+        }
+
+        .btn-calc {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+        }
+
+        .btn-calc:active {
+            background: var(--primary-dark);
+        }
+
+        .result-box {
+            margin-top: 24px;
+            background: #f1f5f9;
+            border-radius: 14px;
+            padding: 16px;
+            display: none;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-top: 10px;
+            border-top: 1.5px dashed #cbd5e1;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--success);
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-card">
+        <div class="header">
+            <h1>Kalkulator Pengiriman & Gaji</h1>
+            <p>Hitung estimasi pendapatan harian & bulanan</p>
+        </div>
+
+        <div class="content">
+            <div class="form-group">
+                <label for="paket">Jumlah Paket Terkirim / Hari</label>
+                <input type="number" id="paket" placeholder="Contoh: 80" value="50">
+            </div>
+
+            <div class="form-group">
+                <label for="rate">Komisi per Paket (Rp)</label>
+                <input type="number" id="rate" placeholder="Contoh: 2500" value="2500">
+            </div>
+
+            <div class="form-group">
+                <label for="hari">Jumlah Hari Kerja / Bulan</label>
+                <input type="number" id="hari" placeholder="Contoh: 26" value="26">
+            </div>
+
+            <div class="form-group">
+                <label for="operasional">BBM & Operasional / Hari (Rp)</label>
+                <input type="number" id="operasional" placeholder="Contoh: 20000" value="20000">
+            </div>
+
+            <button class="btn-calc" onclick="hitungGaji()">Hitung Pendapatan</button>
+
+            <div class="result-box" id="resultBox">
+                <div class="result-item">
+                    <span>Pendapatan Kotor / Hari:</span>
+                    <span id="kotorHari">Rp 0</span>
+                </div>
+                <div class="result-item">
+                    <span>Pendapatan Bersih / Hari:</span>
+                    <span id="bersihHari">Rp 0</span>
+                </div>
+                <div class="result-item">
+                    <span>Pendapatan Kotor / Bulan:</span>
+                    <span id="kotorBulan">Rp 0</span>
+                </div>
+                <div class="result-item">
+                    <span>Total Pendapatan Bersih:</span>
+                    <span id="bersihBulan">Rp 0</span>
+                </div>
+            </div>
+
+            <div class="footer-note">
+                Aplikasi Web Sederhana
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka);
+        }
+
+        function hitungGaji() {
+            const paket = parseFloat(document.getElementById('paket').value) || 0;
+            const rate = parseFloat(document.getElementById('rate').value) || 0;
+            const hari = parseFloat(document.getElementById('hari').value) || 0;
+            const operasional = parseFloat(document.getElementById('operasional').value) || 0;
+
+            const kotorPerHari = paket * rate;
+            const bersihPerHari = kotorPerHari - operasional;
+            const kotorPerBulan = kotorPerHari * hari;
+            const bersihPerBulan = bersihPerHari * hari;
+
+            document.getElementById('kotorHari').innerText = formatRupiah(kotorPerHari);
+            document.getElementById('bersihHari').innerText = formatRupiah(bersihPerHari);
+            document.getElementById('kotorBulan').innerText = formatRupiah(kotorPerBulan);
+            document.getElementById('bersihBulan').innerText = formatRupiah(bersihPerBulan);
+
+            document.getElementById('resultBox').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
